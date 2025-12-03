@@ -1,9 +1,9 @@
 use ahash::HashSet;
+use nom::IResult;
 use nom::Parser;
 use nom::bytes::complete::tag;
 use nom::character::complete::digit1;
 use nom::combinator::eof;
-use nom::IResult;
 use nom::multi::separated_list1;
 
 const INPUT_FILE: &str = "input/02.txt";
@@ -68,7 +68,7 @@ impl SillyCounter {
     fn as_num(&self) -> u64 {
         let mut out = self.simple_num;
 
-        for _ in 1 .. self.repetitions {
+        for _ in 1..self.repetitions {
             out = out * self.tenpow + self.simple_num;
         }
 
@@ -80,13 +80,13 @@ impl SillyCounter {
             Self {
                 repetitions: self.repetitions,
                 tenpow: self.tenpow * 10,
-                simple_num: self.simple_num + 1
+                simple_num: self.simple_num + 1,
             }
         } else {
             Self {
                 repetitions: self.repetitions,
                 tenpow: self.tenpow,
-                simple_num: self.simple_num + 1
+                simple_num: self.simple_num + 1,
             }
         }
     }
@@ -126,7 +126,10 @@ fn parse_ranges(input: &str) -> Vec<Range> {
         let r = match digit_list.as_slice() {
             [a] => Range { min: *a, max: *a },
             [a, b] => Range { min: *a, max: *b },
-            _ => panic!("Got wrong number of - separated numbers (expected 1 or 2, got {})", digit_list.len())
+            _ => panic!(
+                "Got wrong number of - separated numbers (expected 1 or 2, got {})",
+                digit_list.len()
+            ),
         };
 
         Ok((rem, r))
@@ -140,7 +143,6 @@ fn parse_ranges(input: &str) -> Vec<Range> {
 
     parse_ranges_fallible(input).expect("Things should parse").1
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -156,8 +158,11 @@ mod tests {
             Range { min: 11, max: 22 },
             Range { min: 67, max: 67 },
             Range { min: 95, max: 115 },
-            Range { min: 998, max: 1012},
-            Range { min: 1188511880, max: 1188511890 }
+            Range { min: 998, max: 1012 },
+            Range {
+                min: 1188511880,
+                max: 1188511890,
+            },
         ];
 
         assert_eq!(actual, expected);

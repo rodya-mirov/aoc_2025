@@ -6,10 +6,7 @@ pub fn a() -> u64 {
 }
 
 fn a_with_input(input: &str) -> u64 {
-    parse_input(input)
-        .into_iter()
-        .map(|line| max_joltage_variable(&line, 2))
-        .sum()
+    parse_input(input).into_iter().map(|line| max_joltage_variable(&line, 2)).sum()
 }
 
 pub fn b() -> u64 {
@@ -18,10 +15,7 @@ pub fn b() -> u64 {
 }
 
 fn b_with_input(input: &str) -> u64 {
-    parse_input(input)
-        .into_iter()
-        .map(|line| max_joltage_variable(&line, 12))
-        .sum()
+    parse_input(input).into_iter().map(|line| max_joltage_variable(&line, 12)).sum()
 }
 
 /// Super version of max_joltage where you can dynamically describe the number of batteries
@@ -33,11 +27,11 @@ fn max_joltage_variable(bank: &[u8], num_batteries: usize) -> u64 {
     let mut total_sum: u64 = 0;
     let mut left_ind = 0;
 
-    for battery in 0 .. num_batteries {
+    for battery in 0..num_batteries {
         let mut best_val = 0;
         let mut best_ind = left_ind;
 
-        for ind in left_ind .. bank.len() - (num_batteries - battery - 1) {
+        for ind in left_ind..bank.len() - (num_batteries - battery - 1) {
             let val = bank[ind];
             if val > best_val {
                 best_ind = ind;
@@ -53,19 +47,20 @@ fn max_joltage_variable(bank: &[u8], num_batteries: usize) -> u64 {
 }
 
 fn parse_line(line: &str) -> Vec<u8> {
-    line.chars().map(|c| match c {
-        '0' => 0,
-        '1' => 1,
-        '2' => 2,
-        '3' => 3,
-        '4' => 4,
-        '5' => 5,
-        '6' => 6,
-        '7' => 7,
-        '8' => 8,
-        '9' => 9,
-        other => unimplemented!("Unrecognized joltage '{other}'")
-    })
+    line.chars()
+        .map(|c| match c {
+            '0' => 0,
+            '1' => 1,
+            '2' => 2,
+            '3' => 3,
+            '4' => 4,
+            '5' => 5,
+            '6' => 6,
+            '7' => 7,
+            '8' => 8,
+            '9' => 9,
+            other => unimplemented!("Unrecognized joltage '{other}'"),
+        })
         .collect()
 }
 
@@ -108,9 +103,6 @@ mod tests {
         const INPUT: &str = "123
 456";
 
-        assert_eq!(parse_input(INPUT), vec![
-            vec![1, 2, 3],
-            vec![4, 5, 6]
-        ]);
+        assert_eq!(parse_input(INPUT), vec![vec![1, 2, 3], vec![4, 5, 6]]);
     }
 }

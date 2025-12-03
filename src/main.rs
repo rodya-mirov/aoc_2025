@@ -6,7 +6,8 @@
 #![allow(clippy::comparison_chain)]
 
 use std::env;
-use std::fmt::{Display, Formatter};
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::fmt::Write;
 use std::time::Instant;
 

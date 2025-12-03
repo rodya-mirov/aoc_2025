@@ -1,6 +1,7 @@
+use nom::IResult;
+use nom::Parser;
 use nom::branch::alt;
 use nom::bytes::complete::tag;
-use nom::{IResult, Parser};
 use nom::character::complete::digit1;
 use nom::combinator::eof;
 
@@ -54,7 +55,6 @@ fn b_step(mut dial: i32, parsed: i32) -> (i32, usize) {
     if parsed == 0 {
         return (dial, 0);
     }
-
 
     if parsed < 0 && dial == 0 {
         dial = 100;
