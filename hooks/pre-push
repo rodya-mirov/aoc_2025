@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Check if we have anything left, including untracked files. If there are, rig up a trap to stash them at the end.
+# If not, don't have any meaningful trap (no-op). This is needed because there is no nice programmatic way to
+# distinguish between "stash made" and "stash not made because there are no changes."
+if [ -z "$(git status --porcelain=v1 2>/dev/null)" ]
+then
+  function undo_setup()
+  {
+    # nothing to stash, nothing to pop; leaving this no-op in here to make bash happy
+    true
+  }
+else
+  function undo_setup()
+  {
+    git restore . > /dev/null     # Drops any changes made by the commit hook; this should only be relevant if the hook failed
+    git stash pop > /dev/null     # Gives back the unstaged / untracked changes
+  }
+fi
+trap undo_setup EXIT # this will trigger if the script errors OR has a happy exit
+
+git stash -u         # Stashes every change, including staged/unstaged/untracked
+
+set -e
+
+echo "== Running pre-push checks ==="
+
+echo "Verifying code formatter"
+
+# Run rustfmt on the entire workspace
+cargo +nightly fmt --check --all
+
+echo "Verifying code linter"
+
+# Run clippy on the entire workspace
+cargo clippy --workspace --tests
+
+echo "Running rust unit tests"
+
+cargo nextest run
