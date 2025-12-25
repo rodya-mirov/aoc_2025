@@ -11,6 +11,8 @@ use std::fmt::Formatter;
 use std::fmt::Write;
 use std::time::Instant;
 
+mod fraction;
+
 mod day01;
 mod day02;
 mod day03;
